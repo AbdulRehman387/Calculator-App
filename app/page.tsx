@@ -1,113 +1,88 @@
-import Image from "next/image";
+"use client"
+import { useState } from "react";
+import { TbBackspace } from "react-icons/tb";
 
 export default function Home() {
+  const [expression, setExpression] = useState<string>("")
+  const [textToDisplay, setTextToDisplay] = useState<string>("")
+
+  const onClickHandler = (text2: string) => {
+    setExpression(expression + text2);
+    setTextToDisplay(textToDisplay + text2);
+
+  }
+  const onClickClear = () => {
+    setExpression("");
+    setTextToDisplay("");
+  }
+  const onClickEqual = () => {
+    try {
+      const result: number = eval(expression);
+      if (Math.floor(result) < result) {
+        setTextToDisplay(result.toFixed(2).toString());
+        setExpression(result.toFixed(2).toString());
+      }
+      else {
+        setTextToDisplay(result.toString());
+        setExpression(result.toString());
+      }
+      console.log(expression);
+    } catch (error) {
+      alert("Please Enter a Valid Expression!");
+    }
+  }
+  const removeCharacter = () => {
+    setTextToDisplay(textToDisplay.slice(0, -1))
+    setExpression(expression.slice(0, -1))
+  }
+const onClickRoot = ()=>{
+  try {
+  const root:number = Math.sqrt(eval(expression))
+  setExpression(root.toString())
+  setTextToDisplay(root.toString())
+    if (Math.floor(root) < root) {
+      setTextToDisplay(root.toFixed(2).toString());
+      setExpression(root.toFixed(2).toString());
+    }
+    else {
+      setTextToDisplay(root.toString());
+      setExpression(root.toString());
+    }
+    console.log(expression);
+  } catch (error) {
+    alert("Please Enter a Valid Expression!");
+  }
+}
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="bg-zinc-300 h-[100vh] flex flex-col gap-y-3 py-2 mobile:gap-y-20 mobile:py-24">
+      <h1 className="text-5xl font-extrabold flex justify-center items-center">Calculator</h1>
+      <section className="flex justify-center items-center">
+        <div className="w-[400px] bg-[#0E1726] p-5 h-auto mobile:w-[300px]">
+          <div className="bg-blue-100 w-full h-28 flex justify-end items-end px-5"><h3 className="text-7xl font-extrabold">{textToDisplay}</h3></div>
+          <div className="grid grid-cols-4 gap-2 w-full mt-5 text-white">
+            <div onClick={onClickClear} className="bg-[#219594] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#2eacaa] active:bg-[#46d2d0]">C</div>
+            <div onClick={removeCharacter} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]"><TbBackspace className="text-white" /></div>
+            <div onClick={onClickRoot} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">√</div>
+            <div onClick={() => onClickHandler("+")} className="bg-[#2A6AC7] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#3978d6] active:bg-[#5192f4]">+</div>
+            <div onClick={() => onClickHandler("7")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">7</div>
+            <div onClick={() => onClickHandler("8")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">8</div>
+            <div onClick={() => onClickHandler("9")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">9</div>
+            <div onClick={() => onClickHandler("-")} className="bg-[#2A6AC7] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#3978d6] active:bg-[#5192f4]">-</div>
+            <div onClick={() => onClickHandler("4")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">4</div>
+            <div onClick={() => onClickHandler("5")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">5</div>
+            <div onClick={() => onClickHandler("6")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">6</div>
+            <div onClick={() => onClickHandler("*")} className="bg-[#2A6AC7] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#3978d6] active:bg-[#5192f4]">x</div>
+            <div onClick={() => onClickHandler("1")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">1</div>
+            <div onClick={() => onClickHandler("2")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">2</div>
+            <div onClick={() => onClickHandler("3")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">3</div>
+            <div onClick={() => onClickHandler("/")} className="bg-[#2A6AC7] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#3978d6] active:bg-[#5192f4]">/</div>
+            <div onClick={() => onClickHandler("0")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f] col-span-2">0</div>
+            <div onClick={() => onClickHandler(".")} className="bg-[#1E2E47] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#273956] active:bg-[#4c5f7f]">.</div>
+            <div onClick={onClickEqual} className="bg-[#219594] py-6 mobile:py-3 rounded-full text-3xl font-extrabold flex justify-center items-center cursor-pointer hover:bg-[#2eacaa] active:bg-[#46d2d0]">=</div>
+          </div>
         </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      </section>
     </main>
   );
 }
